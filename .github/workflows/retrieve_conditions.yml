@@ -30,6 +30,7 @@ jobs:
         conda install -c conda-forge iris
         conda install -c conda-forge iris-grib
         conda install astropy
+        pip install wget
         python retrieve_conditions.py
     - name: Commit data
       run: |

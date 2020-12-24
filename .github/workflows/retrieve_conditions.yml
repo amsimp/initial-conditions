@@ -1,0 +1,47 @@
+name: Retrieve Current Atmospheric Conditions
+
+on:
+  schedule:
+    - cron:  '00 */6 * * *'
+
+jobs:
+  build:
+
+    runs-on: macos-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Install dependencies
+      run: |
+        wget https://repo.continuum.io/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -O miniconda.sh;
+        bash miniconda.sh -b -p $HOME/miniconda
+        source "$HOME/miniconda/etc/profile.d/conda.sh"
+        hash -r
+        conda config --set always_yes yes --set changeps1 no
+        conda update -q conda
+        conda info -a
+        export PATH="$HOME/miniconda/bin:$PATH"
+        which python
+        conda init
+    - name: Export data
+      run: |
+        export PATH="$HOME/miniconda/bin:$PATH"
+        conda init
+        conda install -c conda-forge iris
+        conda install -c conda-forge iris-grib
+        conda install astropy
+        python retrieve_conditions.py
+    - name: Commit data
+      run: |
+        git config --global user.email "56919681+amsimp-bot@users.noreply.github.com"
+        git config --global user.name "amsimp-bot"
+        git add .
+        if [ -n "$(git status --porcelain)" ]; then
+          git commit -m "Current Atmospheric Conditions Added";
+        else
+          echo "Data has not been updated since last commit";
+        fi
+    - name: Push data to GitHub
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.amsimp_bot }}

@@ -43,6 +43,6 @@ jobs:
           echo "Data has not been updated since last commit";
         fi
     - name: Push data to GitHub
-      uses: ad-m/github-push-action@main
+      uses: ad-m/github-push-action@master
       with:
         github_token: ${{ secrets.amsimp_bot }}

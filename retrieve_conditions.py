@@ -69,10 +69,12 @@ t = tqdm(total=4, desc='Downloading')
 tmp = download_var(tmp_url)
 tmp.standard_name = None
 tmp.long_name = '2m_temperature'
+tmp.var_name = 't2m'
 t.update()
 
 # 850 hPa temperature.
 t850 = download_var(t850_url)
+t850.var_name = 't'
 t.update()
 
 # 500 hPa geopotential height.
@@ -80,6 +82,7 @@ g = 9.80665
 z500 = download_var(z500_url) * g
 z500.units = 'm2 s-2'
 z500.standard_name = 'geopotential'
+z500.var_name = 'z'
 t.update()
 
 # Precipitation rate.

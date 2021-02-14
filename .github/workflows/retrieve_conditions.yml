@@ -35,7 +35,8 @@ jobs:
         conda install -c conda-forge iris-grib
         conda install astropy
         pip install wget
-        python retrieve_conditions.py
+        python gfs.py
+        python gefs.py
     - name: Commit data
       run: |
         git config --global user.email "56919681+amsimp-bot@users.noreply.github.com"

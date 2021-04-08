@@ -9,8 +9,6 @@ from astropy import units
 import sys
 
 # Define preliminary urls.
-# 2-m temperature.
-tmp_url = "https://nomads.ncep.noaa.gov/cgi-bin/filter_gefs_atmos_0p50a.pl?file=ge{}.t{}z.pgrb2a.0p50.f{}&lev_2_m_above_ground=on&var_TMP=on&leftlon=0&rightlon=360&toplat=90&bottomlat=-90&dir=%2Fgefs.{}"
 # 850 hPa temperature.
 t850_url = "https://nomads.ncep.noaa.gov/cgi-bin/filter_gefs_atmos_0p50a.pl?file=ge{}.t{}z.pgrb2a.0p50.f{}&lev_850_mb=on&var_TMP=on&leftlon=0&rightlon=360&toplat=90&bottomlat=-90&dir=%2Fgefs.{}"
 # 500 hPa geopotential height.
@@ -26,7 +24,6 @@ date = date.replace(
 ) - timedelta(hours=6)
 
 # Retrieve current conditions.
-# %2Fatmos%2Fpgrb2ap5
 def download_var(href):
     # Define output cube list.
     cubelist = iris.cube.CubeList([])
@@ -78,15 +75,7 @@ def download_var(href):
 
 # Download.
 # Progress bar.
-t = tqdm(total=3, desc='Downloading')
-
-# 2-m temperature.
-tmp = download_var(tmp_url)
-tmp.standard_name = None
-tmp.long_name = '2m_temperature'
-tmp.var_name = 't2m'
-iris.save(tmp, 'gefs/t2m.nc')
-t.update()
+t = tqdm(total=2, desc='Downloading')
 
 # 850 hPa temperature.
 t850 = download_var(t850_url)
